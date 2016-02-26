@@ -37,6 +37,9 @@ import com.pddstudio.share.enums.Type;
 
 import java.io.File;
 
+/**
+ * The Share class allows you to easily configure & create shareable content
+ */
 public class Share {
 
     private final Activity activity;
@@ -56,40 +59,80 @@ public class Share {
         }
     }
 
+    /**
+     * Creates a new {@link Share} instance.
+     * @param activity - Your activity
+     * @return a new {@link Share} instance.
+     */
     public static Share create(@NonNull Activity activity) {
         return new Share(activity);
     }
 
+    /**
+     * Set the MIME type of your share action.
+     * @param type - The MIME-Type of your share action
+     * @return -
+     */
     public Share withType(Type type) {
         withType(type.getType());
         return this;
     }
 
+    /**
+     * Set the MIME type of your share action
+     * @param type - The MIME-Type as String
+     * @return -
+     */
     public Share withType(String type) {
         intentBuilder.setType(type);
         return this;
     }
 
+    /**
+     * Set the literal text data to be sent as part of the share.
+     * @param text - The text which should be part of your share.
+     * @return -
+     */
     public Share withText(String text) {
         intentBuilder.setText(text);
         return this;
     }
 
+    /**
+     * Set the literal text data to be sent as part of the share.
+     * @param text - The text which should be part of your share.
+     * @return -
+     */
     public Share withText(@StringRes int text) {
         intentBuilder.setText(activity.getString(text));
         return this;
     }
 
+    /**
+     * Set an HTML string to be sent as part of the share.
+     * @param text - HTML styled text which should be part of your share.
+     * @return -
+     */
     public Share withHtmlText(String text) {
         intentBuilder.setHtmlText(text);
         return this;
     }
 
+    /**
+     * Set an HTML string to be sent as part of the share.
+     * @param text - HTML styled text which should be part of your share.
+     * @return -
+     */
     public Share withHtmlText(@StringRes int text) {
         intentBuilder.setHtmlText(activity.getString(text));
         return this;
     }
 
+    /**
+     * Append an {@link EmailConfiguration} - this is used in case you want to share something via E-Mail
+     * @param emailConfiguration - The {@link EmailConfiguration} instance
+     * @return -
+     */
     public Share withEmailConfiguration(@NonNull EmailConfiguration emailConfiguration) {
 
         //set the address for the email
@@ -120,11 +163,27 @@ public class Share {
         return this;
     }
 
+    /**
+     * Add a file to the content you want to share.
+     * <b>Note:</b> This requires a {@linkplain FileProvider}.
+     * @param mimeType - The MIME-Type of the file
+     * @param file - The File itself
+     * @param fileProviderAuthority - The name of your {@linkplain FileProvider}
+     * @return -
+     */
     public Share withFile(Type mimeType, File file, String fileProviderAuthority) {
         withFile(mimeType.getType(), file, fileProviderAuthority);
         return this;
     }
 
+    /**
+     * Add a file to the content you want to share.
+     * <b>Note:</b> This requires a {@linkplain FileProvider}.
+     * @param mimeType - The MIME-Type of the file
+     * @param file - The File itself
+     * @param fileProviderAuthority - The name of your {@linkplain FileProvider}
+     * @return -
+     */
     public Share withFile(String mimeType, File file, String fileProviderAuthority) {
         try {
             Uri fileUri = FileProvider.getUriForFile(activity, fileProviderAuthority, file);
@@ -140,21 +199,40 @@ public class Share {
         return this;
     }
 
+    /**
+     * Set a custom title for the Chooser (if selected)
+     * @param chooserTitle - The title used by the chooser.
+     * @return -
+     */
     public Share withCustomChooserTitle(String chooserTitle) {
         intentBuilder.setChooserTitle(chooserTitle);
         return this;
     }
 
+    /**
+     * Set a custom title for the Chooser (if selected)
+     * @param chooserTitle - The title used by the chooser.
+     * @return -
+     */
     public Share withCustomChooserTitle(@StringRes int chooserTitle) {
         intentBuilder.setChooserTitle(activity.getString(chooserTitle));
         return this;
     }
 
+    /**
+     * Get the {@linkplain Intent} configured by this {@link Share} instance.
+     * @param chooserIntent - Whether the {@linkplain Intent} should be configured with or without a chooser.
+     * @return The {@linkplain Intent} configured by this {@link Share} instance.
+     */
     public Intent getIntent(boolean chooserIntent) {
         if(chooserIntent) return intentBuilder.createChooserIntent();
         else return intentBuilder.getIntent();
     }
 
+    /**
+     * Immediately share the {@linkplain Intent} configured by this {@link Share} instance.
+     * @param chooserIntent - Whether the {@linkplain Intent} should be configured with or without a chooser.
+     */
     public void share(boolean chooserIntent) {
         if(chooserIntent) {
             Intent intent = intentBuilder.createChooserIntent();
@@ -175,6 +253,9 @@ public class Share {
         }
     }
 
+    /**
+     * Immediately share the {@linkplain Intent} configured by this {@link Share} instance, without a chooser.
+     */
     public void share() {
         share(false);
     }
