@@ -23,8 +23,6 @@ package com.pddstudio.share.conf;
  * have a look at the README.md
  */
 
-import java.util.ServiceConfigurationError;
-
 public class EmailConfiguration {
 
     private final String[] sendTo;
